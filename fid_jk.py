@@ -47,6 +47,7 @@ from calc_jk_real import calc_jk_real
 ##########################################################
 
 param_names = ('alpha','logM1','sigma_logM','logM0','logMmin','mean_occupation_centrals_assembias_param1','mean_occupation_satellites_assembias_param1')
+output_names = ('jkcov','jkfunc')
 
 ##########################################################
 
@@ -85,8 +86,8 @@ proj_search_radius1 = 2.0         ##a cylinder of radius 2 Mpc/h
 proj_search_radius2 = 5.0         ##a cylinder of radius 5 Mpc/h
 cylinder_half_length = 10.0      ##half-length 10 Mpc/h
 
-cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),args.Nbins_c-9)).astype(np.int)])[:-1]
-ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),args.Nbins_a-9)).astype(np.int)])[:-1]
+cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),args.Nbins_c-10)).astype(np.int)])
+ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),args.Nbins_a-10)).astype(np.int)])
 rat_bin = args.Nbins_r
 ##cic
 
@@ -121,7 +122,7 @@ def calc_all_observables(param):
     particle_masses = halocat.particle_mass*downsampling_factor
     
     
-    jkcov = calc_jk_real(pos_gals_d, Lbox, wbool=args.funcbool[0], dbool=args.funcbool[1], vbool=args.funcbool[2], cbool=args.funcbool[3], abool=args.funcbool[4], rbool=args.funcbool[5], jackknife_nside=args.Nsidejk,\
+    jkcov, jkfunc = calc_jk_real(pos_gals_d, Lbox, wbool=args.funcbool[0], dbool=args.funcbool[1], vbool=args.funcbool[2], cbool=args.funcbool[3], abool=args.funcbool[4], rbool=args.funcbool[5], jackknife_nside=args.Nsidejk,\
                  rbins_wp=r_wp, zmax=pi_max,\
                  r_vpf=r_vpf, vpf_cen=vpf_centers,\
                  galpos_non_rsd=pos_gals, ptclpos=ptclpos, ptcl_mass=particle_masses, r_ds=rp_bins_ggl,\
@@ -129,7 +130,10 @@ def calc_all_observables(param):
                  cyl_r2=proj_search_radius2,  ann_bin=ann_sum_at,\
                  rat_bin=rat_bin)
     
-    return jkcov
+    output.append(jkcov)
+    output.append(jkfunc)
+    
+    return output
 
 
 ############################################################
@@ -145,13 +149,16 @@ def main(model_gen_func, fiducial, output_fname):
     
     global halocat
     
-    halocat = CachedHaloCatalog(simname = args.simname, version_name = args.version,redshift = args.redshift, \
+    
+    halocat = CachedHaloCatalog(simname = args.simname, version_name = args.version, redshift = args.redshift, \
                                 halo_finder = args.halofinder)
     model.populate_mock(halocat)
-    
-    np.save(output_fname, calc_all_observables(params))
-    
-    print str(datetime.now())
+    output_data = calc_all_observables(params)
+    for name, data in zip(output_names, output_data):
+        output_dict[name] = np.array(data)
+
+    np.savez(output_fname, **output_dict)
+
 
 if __name__ == '__main__':
     main(decorated_hod_model, fiducial_p, args.outfile)
@@ -159,4 +166,4 @@ if __name__ == '__main__':
         f.write(sys.argv[0]+'\n')
         for arg in vars(args):
             f.write(str(arg)+':'+str(getattr(args, arg))+'\n')
-
+    print str(datetime.now())

@@ -9,7 +9,6 @@ parser.add_argument('--version',default='halotools_v0p4',dest='version')
 parser.add_argument('--redshift',type=float,default=0.,dest='redshift')
 parser.add_argument('--halofinder',default='rockstar',dest='halofinder')
 
-parser.add_argument('--seed',type=int,default=-1,dest='seed')
 parser.add_argument('--funcbool',nargs=6,type=int,required=True,dest='funcbool')
 
 parser.add_argument('--Nbins_w',type=int,default=25,dest='Nbins_w')
@@ -49,7 +48,7 @@ from calc_jk_real import calc_jk_real
 ##########################################################
 
 param_names = ('alpha','logM1','sigma_logM','logM0','logMmin','mean_occupation_centrals_assembias_param1','mean_occupation_satellites_assembias_param1')
-output_names = ('func','param','i')
+output_names = ('func','param')
 
 ##########################################################
 
@@ -72,11 +71,6 @@ elif args.threshold==-21.0:
     
 #########################################################
 
-if args.seed==-1:
-    seed = np.random.randint(100000)
-else:
-    seed = args.seed
-
 Lbox = args.Lbox
 
 pi_max = 60
@@ -92,8 +86,8 @@ proj_search_radius1 = 2.0         ##a cylinder of radius 2 Mpc/h
 proj_search_radius2 = 5.0         ##a cylinder of radius 5 Mpc/h
 cylinder_half_length = 10.0      ##half-length 10 Mpc/h
 
-cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),args.Nbins_c-9)).astype(np.int)])[:-1]
-ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),args.Nbins_a-9)).astype(np.int)])[:-1]
+cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),args.Nbins_c-10)).astype(np.int)])
+ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),args.Nbins_a-10)).astype(np.int)])
 rat_bin = args.Nbins_r
 ##cic
 
@@ -106,14 +100,14 @@ num_ptcls_to_use = len(ptclpos)
 ##########################################################
 
 
-def calc_all_observables(param,seed=seed):
+def calc_all_observables(param):
 
     model.param_dict.update(dict(zip(param_names, param)))    ##update model.param_dict with pairs (param_names:params)
     
     try:
-        model.mock.populate(seed=seed)
+        model.mock.populate()
     except:
-        model.populate_mock(halocat, seed=seed)
+        model.populate_mock(halocat)
     
     gc.collect()
     
@@ -133,7 +127,7 @@ def calc_all_observables(param,seed=seed):
     func = calc_jk_real(pos_gals_d, Lbox, wbool=args.funcbool[0], dbool=args.funcbool[1], vbool=args.funcbool[2], cbool=args.funcbool[3], abool=args.funcbool[4], rbool=args.funcbool[5], jackknife_nside=0,\
                  rbins_wp=r_wp, zmax=pi_max,\
                  r_vpf=r_vpf, vpf_cen=vpf_centers,\
-                 galpos_non_rsd=pos_gals, ptclpos=ptclpos, ptcl_mass=particle_masses, r_ds=rp_bins_ggl,\
+                 galpos_non_rsd=pos_gals, ptclpos=ptclpos, ptcl_mass=particle_masses, ptcl_per_dim=halocat.num_ptcl_per_dim, r_ds=rp_bins_ggl,\
                  cyl_r1=proj_search_radius1, cyl_halflen=cylinder_half_length, cyl_bin=cyl_sum_at,\
                  cyl_r2=proj_search_radius2,  ann_bin=ann_sum_at,\
                  rat_bin=rat_bin)
@@ -141,13 +135,10 @@ def calc_all_observables(param,seed=seed):
     output.append(func) 
 
     
+
     # parameter set
     output.append(param)
-    
-    
-    output.append(np.where(param-fid!=0)[0][0])
-    print 1
-    
+
     return output
 
 
@@ -185,9 +176,8 @@ def main(model_gen_func, fiducial, output_fname):
 
 if __name__ == '__main__':
     main(decorated_hod_model, fiducial_p, args.outfile)
-    with open(args.outfile,'w') as f:
+    with open(args.outfile+'_log','w') as f:
         f.write(sys.argv[0]+'\n')
-        f.write('seed:'+str(seed)+'\n')
         for arg in vars(args):
             f.write(str(arg)+':'+str(getattr(args, arg))+'\n')
 

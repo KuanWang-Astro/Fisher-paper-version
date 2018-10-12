@@ -526,7 +526,7 @@ def calc_jk_real(points, box_size, wbool=1, dbool=1, vbool=1, cbool=1, abool=1, 
         if rbool:
             ratio_h = ((cic1_h-1)/(cic2_h-1)).astype('float')
             ratio_h[~np.isfinite(ratio_h)] = 0.
-            Qratio_h = np.array([np.percentile(ratio_h,q) for q in np.linspace(0,100,rat_bin+1)[1:]])
+            Qratio_h = np.array([np.percentile(ratio_h,q) for q in np.linspace(0,100,rat_bin+2)[1:-1]])
             func_full.append(Qratio_h)
     
         func_full = np.array([item for sublist in func_full for item in sublist])
@@ -607,7 +607,7 @@ def calc_jk_real(points, box_size, wbool=1, dbool=1, vbool=1, cbool=1, abool=1, 
             Qratio_jack = np.zeros((n_jack,rat_bin))
             for i in range(n_jack):
                 mask = jack_ids!=i
-                Qratio_jack[i] = np.array([np.percentile(ratio[mask],q) for q in np.linspace(0,100,rat_bin+1)[1:]])
+                Qratio_jack[i] = np.array([np.percentile(ratio[mask],q) for q in np.linspace(0,100,rat_bin+2)[1:-1]])
             func_jk.append(Qratio_jack.T)
         func_cov = np.cov(np.vstack(func_jk), bias=1)*(n_jack-1)
 

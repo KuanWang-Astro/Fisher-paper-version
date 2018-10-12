@@ -93,8 +93,8 @@ proj_search_radius1 = 2.0         ##a cylinder of radius 2 Mpc/h
 proj_search_radius2 = 5.0         ##a cylinder of radius 5 Mpc/h
 cylinder_half_length = 10.0      ##half-length 10 Mpc/h
 
-cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),args.Nbins_c-9)).astype(np.int)])[:-1]
-ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),args.Nbins_a-9)).astype(np.int)])[:-1]
+cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),args.Nbins_c-10)).astype(np.int)])
+ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),args.Nbins_a-10)).astype(np.int)])
 rat_bin = args.Nbins_r
 ##cic
 
