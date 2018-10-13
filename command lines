@@ -1,0 +1,5 @@
+python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_30_bins_for_all/jk_19p0
+python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_30_bins_for_all/jk_19p5
+python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_20p0
+python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/jk_20p5
+python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_21p0
