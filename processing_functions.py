@@ -15,6 +15,7 @@ from processing_variables import *
 
 ########################################################################################
 # Calculate the total covariance from separate files ############## calc_covariance ####
+# Assign 0 to very small values, and cut out 0 rows and columns ### cov_clean ##########
 # Load pert files ################################################# load_pert ##########
 # Calculate smoothing parameter from gcv ########################## gcv_alpha ##########
 # Calculate minimal smoothing parameter for 7 parameters ########## min_alphas #########
@@ -40,12 +41,20 @@ from processing_variables import *
 # Plot contour from covariance matrix ############################# ellipse_from_cov ###
 ########################################################################################
 
-def calc_covariance(fidjk, fidvd, funcidx={'w':range(20),'d':range(20,40),'v':range(40,60),\
-                                           'c':range(60,100),'a':range(100,140),'r':range(140,165)}):
-    cov = fidjk['func_all_cov'][0]+np.cov(fidjk['func_all'].T)
+def calc_covariance(jkcov, fidreal, fidvd, funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
+                                           'c':range(90,120),'a':range(120,150),'r':range(150,180)}):
+    cov = jkcov+np.cov(fidreal.T)
     cov[funcidx['v']][:,funcidx['v']] += np.cov(fidvd['vpf'].T)
     cov[funcidx['d']][:,funcidx['d']] += np.cov(fidvd['deltasigma'].T)
     return cov
+
+def cov_clean(cov):
+    for i in range(len(cov)):
+        for j in range(len(cov)):
+            if np.abs(cov[i,j])<1e-15:
+                cov[i,j] = 0
+    idx = np.nonzero(cov.diagonal())[0]
+    return cov[idx][:,idx], idx
 
 def load_pert(threshold):
     df_dict = dict()
@@ -87,8 +96,8 @@ def locfit_deriv(ys,alpha,x,x0): #x is perturbed values of one parameter
 def locfit_comb(ys,alphas,xs,x0s):
     return np.array([locfit_deriv(ys[Nparam*i:(i+1)*Nparam],alphas[i],xs[Nparam*i:(i+1)*Nparam,i],x0s[i]) for i in range(7)])
 
-def cut_by_func_1D(vec, axis=0, funcnames='wdvcar', funcidx={'w':range(20),'d':range(20,40),'v':range(40,60),\
-                                                           'c':range(60,100),'a':range(100,140),'r':range(140,165)}):
+def cut_by_func_1D(vec, axis=0, funcnames='wdvcar', funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
+                                           'c':range(90,120),'a':range(120,150),'r':range(150,180)}):
     vecs = dict()
     for key in funcnames:
         vecs[key] = vec.take(funcidx[key],axis=axis)
@@ -98,8 +107,8 @@ def cut_by_func_1D(vec, axis=0, funcnames='wdvcar', funcidx={'w':range(20),'d':r
             vecs[key] = np.concatenate(list(vec.take(funcidx[k],axis=axis) for k in key),axis=axis)
     return vecs
 
-def cut_by_func_2D(mat, funcnames='wdvcar', funcidx={'w':range(20),'d':range(20,40),'v':range(40,60),\
-                                                     'c':range(60,100),'a':range(100,140),'r':range(140,165)}):
+def cut_by_func_2D(mat, funcnames='wdvcar', funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
+                                           'c':range(90,120),'a':range(120,150),'r':range(150,180)}):
     mats = dict()
     for key in funcnames:
         mats[key] = mat[funcidx[key]][:,funcidx[key]]
