@@ -3,3 +3,9 @@ python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile
 python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_20p0
 python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/jk_20p5
 python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_21p0
+
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -21.0 --outfile Run_30_bins_for_all/fidreal_21p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.5 --outfile Run_30_bins_for_all/fidreal_20p5
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.0 --outfile Run_30_bins_for_all/fidreal_20p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.5 --outfile Run_30_bins_for_all/fidreal_19p5
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.0 --outfile Run_30_bins_for_all/fidreal_19p0
