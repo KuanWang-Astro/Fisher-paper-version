@@ -16,6 +16,7 @@ from processing_variables import *
 ########################################################################################
 # Calculate the total covariance from separate files ############## calc_covariance ####
 # Assign 0 to very small values, and cut out 0 rows and columns ### cov_clean ##########
+# Cut out columns with 0 variance ################################# pert_clean #########
 # Load pert files ################################################# load_pert ##########
 # Calculate smoothing parameter from gcv ########################## gcv_alpha ##########
 # Calculate minimal smoothing parameter for 7 parameters ########## min_alphas #########
@@ -49,17 +50,20 @@ def calc_covariance(jkcov, fidreal, fidvd, funcidx={'w':range(30),'d':range(30,6
     cov[funcidx['d']][:,funcidx['d']] += np.cov(fidvd['deltasigma'].T)
     return cov
 
-def cov_clean(cov,return_idx=0):
+def cov_clean(cov, return_idx=0):
     covcp = np.copy(cov)
     for i in range(len(covcp)):
         for j in range(len(covcp)):
             if np.abs(covcp[i,j])<1e-15:
-                cov[i,j] = 0
+                covcp[i,j] = 0
     idx = np.nonzero(covcp.diagonal())[0]
     if return_idx:
         return idx
     else:
         return covcp[idx][:,idx]
+    
+def pert_clean(pertfunc, nzidx):
+    return pertfunc[:,nzidx]
 
 def load_pert(threshold):
     df_dict = dict()
@@ -77,17 +81,17 @@ def gcv_alpha(x, ys): #each column of ys should be one f(x)
         alphas[i] = list(loessfit[10][0])[0]
     return alphas
 
-def min_alphas(func,param): #returns array of 7
+def min_alphas(func, param): #returns array of 7
     return np.array([4.*min(gcv_alpha(param[Nparam*i:(i+1)*Nparam,i],func[Nparam*i:(i+1)*Nparam]))for i in range(7)])
 
-def apply_maxmin_alpha(alphas,min_alphas):
+def apply_maxmin_alpha(alphas, min_alphas):
     alphas = np.max((alphas,min_alphas),axis=0)
     return np.min((alphas,np.ones(7)),axis=0)
 
-def sigma_to_alpha(sigma,oneside):
+def sigma_to_alpha(sigma, oneside):
     return 2.*sigma/oneside
 
-def iterated_alpha(pertfunc,invcov,pertparam,p0,oneside):
+def iterated_alpha(pertfunc, invcov, pertparam, p0, oneside):
     minalphas = min_alphas(pertfunc,pertparam)
     alphas = np.ones(7)
     for i in range(3):
@@ -97,7 +101,7 @@ def iterated_alpha(pertfunc,invcov,pertparam,p0,oneside):
         alphas = apply_maxmin_alpha(sigma_to_alpha(sigma,oneside),minalphas)
     return alphas
 
-def locfit_deriv(ys,alpha,x,x0): #x is perturbed values of one parameter
+def locfit_deriv(ys, alpha, x, x0): #x is perturbed values of one parameter
     formula = Formula('y~x')
     env = formula.environment
     env['x'] = x
@@ -108,7 +112,7 @@ def locfit_deriv(ys,alpha,x,x0): #x is perturbed values of one parameter
         dfdp[i] = list(locfit.preplot_locfit(fit,x0)[1])[0]
     return dfdp
 
-def locfit_comb(ys,alphas,xs,x0s):
+def locfit_comb(ys, alphas, xs, x0s):
     return np.array([locfit_deriv(ys[Nparam*i:(i+1)*Nparam],alphas[i],xs[Nparam*i:(i+1)*Nparam,i],x0s[i]) for i in range(7)])
 
 def cut_by_func_1D(vec, axis=0, funcnames='wdvcar', funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
