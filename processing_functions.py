@@ -21,6 +21,7 @@ from processing_variables import *
 # Calculate minimal smoothing parameter for 7 parameters ########## min_alphas #########
 # Ensure the alphas returned are >= min_alphas and <= 1 ########### apply_maxmin_alpha #
 # Calculate updated smoothing parameter from sigma feedback ####### sigma_to_alpha #####
+# Iterate to find optimal smoothing parameter ##################### iterated_alpha #####
 # Calculate derivative given file and alpha ####################### locfit_deriv #######
 # Cut and reassemble array by function in 1 dimension ############# cut_by_func_1D #####
 # Cut and reassemble matrix by function in 2 dimensions ########### cut_by_func_2D #####
@@ -48,19 +49,23 @@ def calc_covariance(jkcov, fidreal, fidvd, funcidx={'w':range(30),'d':range(30,6
     cov[funcidx['d']][:,funcidx['d']] += np.cov(fidvd['deltasigma'].T)
     return cov
 
-def cov_clean(cov):
-    for i in range(len(cov)):
-        for j in range(len(cov)):
-            if np.abs(cov[i,j])<1e-15:
+def cov_clean(cov,return_idx=0):
+    covcp = np.copy(cov)
+    for i in range(len(covcp)):
+        for j in range(len(covcp)):
+            if np.abs(covcp[i,j])<1e-15:
                 cov[i,j] = 0
-    idx = np.nonzero(cov.diagonal())[0]
-    return cov[idx][:,idx], idx
+    idx = np.nonzero(covcp.diagonal())[0]
+    if return_idx:
+        return idx
+    else:
+        return covcp[idx][:,idx]
 
 def load_pert(threshold):
     df_dict = dict()
     dp_dict = dict()
     for seed in seed_list[threshold]:
-        data = np.load('bolp_'+threshold[1:3]+'p'+threshold[4]+'_um0_'+seed+'.npz')
+        data = np.load('Run_30_bins_for_all/pert_'+threshold[1:3]+'p'+threshold[4]+'_'+seed+'.npz')
         dp_dict[seed] = data['param']
         df_dict[seed] = data['func_all']
     return df_dict, dp_dict
@@ -81,6 +86,16 @@ def apply_maxmin_alpha(alphas,min_alphas):
 
 def sigma_to_alpha(sigma,oneside):
     return 2.*sigma/oneside
+
+def iterated_alpha(pertfunc,invcov,pertparam,p0,oneside):
+    minalphas = min_alphas(pertfunc,pertparam)
+    alphas = np.ones(7)
+    for i in range(3):
+        fit = locfit_comb(pertfunc,alphas,pertparam,p0)
+        fisher = calc_fisher(fit,invcov)
+        sigma = calc_1sigma(fisher)
+        alphas = apply_maxmin_alpha(sigma_to_alpha(sigma,oneside),minalphas)
+    return alphas
 
 def locfit_deriv(ys,alpha,x,x0): #x is perturbed values of one parameter
     formula = Formula('y~x')
