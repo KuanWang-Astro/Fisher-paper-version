@@ -3,8 +3,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description='#')
 
-parser.add_argument('--Lbox',type=float,default=250.,dest='Lbox')
-parser.add_argument('--simname',default='bolplanck',dest='simname')
+parser.add_argument('--Lbox',type=float,default=1000.,dest='Lbox')
+parser.add_argument('--simname',default='multidark',dest='simname')
 parser.add_argument('--version',default='halotools_v0p4',dest='version')
 parser.add_argument('--redshift',type=float,default=0.,dest='redshift')
 parser.add_argument('--halofinder',default='rockstar',dest='halofinder')
@@ -18,8 +18,8 @@ parser.add_argument('--Nbins_c',type=int,default=30,dest='Nbins_c')
 parser.add_argument('--Nbins_a',type=int,default=30,dest='Nbins_a')
 parser.add_argument('--Nbins_r',type=int,default=30,dest='Nbins_r')
 
-parser.add_argument('--vpfcen',default='vpf_centers_250_1e5.txt',dest='vpfcen')
-parser.add_argument('--ptclpos',default='bolplanck_1of10_ptcl.txt',dest='ptclpos')
+parser.add_argument('--vpfcen',default='vpf_centers_1000_1e6.txt',dest='vpfcen')
+#parser.add_argument('--ptclpos',default='bolplanck_1of10_ptcl.txt',dest='ptclpos')
 
 parser.add_argument('--Nparam',type=int,required=True,dest='Nparam')
 parser.add_argument('--threshold',required=True,type=float,dest='threshold')
@@ -78,7 +78,7 @@ r_wp = np.logspace(-1, 1.5, args.Nbins_w)
 ##wp
 
 r_vpf = np.logspace(0,1.,args.Nbins_v)
-num_sphere = int(1e5)
+num_sphere = int(1e6)
 vpf_centers = np.loadtxt(args.vpfcen)
 ##vpf
 
@@ -91,9 +91,7 @@ ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200)
 rat_bin = args.Nbins_r
 ##cic
 
-ptclpos = np.loadtxt(args.ptclpos)
 rp_bins_ggl = np.logspace(-1, 1.5, args.Nbins_d+1)
-num_ptcls_to_use = len(ptclpos)
 ##ggl
 
 
@@ -120,6 +118,8 @@ def calc_all_observables(param):
     
     pos_gals = return_xyz_formatted_array(*(model.mock.galaxy_table[ax] for ax in 'xyz'), period=Lbox)
     pos_gals = np.array(pos_gals,dtype=float)
+    ptclpos = return_xyz_formatted_array(*(halocat.ptcl_table[ax] for ax in 'xyz'), period=Lbox)
+    num_ptcls_to_use = len(ptclpos)
     particle_masses = halocat.particle_mass
     total_num_ptcls_in_snapshot = halocat.num_ptcl_per_dim**3
     downsampling_factor = total_num_ptcls_in_snapshot/float(num_ptcls_to_use)
