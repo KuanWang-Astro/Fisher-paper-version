@@ -46,8 +46,7 @@ from processing_variables import *
 def calc_covariance(jkcov, fidreal, fidvd, funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
                                            'c':range(90,120),'a':range(120,150),'r':range(150,180)}):
     cov = jkcov+np.cov(fidreal.T)
-    cov[funcidx['v']][:,funcidx['v']] += np.cov(fidvd['vpf'].T)
-    cov[funcidx['d']][:,funcidx['d']] += np.cov(fidvd['deltasigma'].T)
+    cov[funcidx['v']][:,funcidx['v']] += np.cov(fidvd.T)
     return cov
 
 def cov_clean(cov, return_idx=0):
