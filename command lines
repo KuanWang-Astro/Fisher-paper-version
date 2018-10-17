@@ -4,17 +4,11 @@ python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile
 python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_multidark_30/jk_20p5
 python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_multidark_30/jk_21p0
 
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -21.0 --outfile Run_multidark_30/fidreal_21p0
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.5 --outfile Run_multidark_30/fidreal_20p5
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.0 --outfile Run_multidark_30/fidreal_20p0
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.5 --outfile Run_multidark_30/fidreal_19p5
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.0 --outfile Run_multidark_30/fidreal_19p0
-
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_multidark_30/pert_19p0
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_multidark_30/pert_19p5
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_multidark_30/pert_20p0
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_multidark_30/pert_20p5
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_multidark_30/pert_21p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 200 --threshold -21.0 --outfile Run_multidark_30/fidreal_21p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 200 --threshold -20.5 --outfile Run_multidark_30/fidreal_20p5
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 200 --threshold -20.0 --outfile Run_multidark_30/fidreal_20p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 200 --threshold -19.5 --outfile Run_multidark_30/fidreal_19p5
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 200 --threshold -19.0 --outfile Run_multidark_30/fidreal_19p0
 
 
 python fid_random.py --Nvpf 500 --threshold -19.0 --outfile Run_multidark_30/fidrandom_19p0
@@ -22,3 +16,9 @@ python fid_random.py --Nvpf 500 --threshold -19.5 --outfile Run_multidark_30/fid
 python fid_random.py --Nvpf 500 --threshold -20.0 --outfile Run_multidark_30/fidrandom_20p0
 python fid_random.py --Nvpf 500 --threshold -20.5 --outfile Run_multidark_30/fidrandom_20p5
 python fid_random.py --Nvpf 500 --threshold -21.0 --outfile Run_multidark_30/fidrandom_21p0
+
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_multidark_30/pert_19p0
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_multidark_30/pert_19p5
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_multidark_30/pert_20p0
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_multidark_30/pert_20p5
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_multidark_30/pert_21p0
