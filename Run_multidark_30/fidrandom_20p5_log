@@ -1,0 +1,11 @@
+fid_random.py
+redshift:0.0
+Nbins_v:30
+Lbox:1000.0
+halofinder:rockstar
+Nvpf:500
+outfile:Run_multidark_30/fidrandom_20p5
+version:halotools_v0p4
+nproc:55
+threshold:-20.5
+simname:multidark
