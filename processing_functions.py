@@ -94,7 +94,7 @@ def apply_maxmin_alpha(alphas, min_alphas):
     return np.min((alphas,np.ones(7)),axis=0)
 
 def sigma_to_alpha(sigma, oneside):
-    return 2.*sigma/oneside
+    return sigma/oneside ##deleted factor of 2
 
 def iterated_alpha(pertfunc, invcov, pertparam, p0, oneside):
     minalphas = min_alphas(pertfunc,pertparam)
