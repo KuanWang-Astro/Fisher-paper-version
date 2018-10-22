@@ -74,6 +74,11 @@ def load_pert(threshold):
         df_dict[seed] = data['func_all']
     return df_dict, dp_dict
 
+def gcv_alpha_singley(x, y):
+    loessfit = fANCOVA.loess_as(x,y,degree=2,criterion='gcv')
+    alpha = list(loessfit[10][0])[0]
+    return alpha
+
 def gcv_alpha(x, ys): #each column of ys should be one f(x)
     alphas = np.zeros(len(ys.T))
     for i,y in enumerate(ys.T):
@@ -100,6 +105,15 @@ def iterated_alpha(pertfunc, invcov, pertparam, p0, oneside):
         sigma = calc_1sigma(fisher)
         alphas = apply_maxmin_alpha(sigma_to_alpha(sigma,oneside),minalphas)
     return alphas
+
+def locfit_deriv_singley(y, alpha, x, x0): #x is perturbed values of one parameter
+    formula = Formula('y~x')
+    env = formula.environment
+    env['x'] = x
+    env['y'] = y
+    fit = locfit.locfit(formula=formula,deg=2,deriv=1,alpha=alpha)
+    dfdp = list(locfit.preplot_locfit(fit,x0)[1])[0]
+    return dfdp
 
 def locfit_deriv(ys, alpha, x, x0): #x is perturbed values of one parameter
     formula = Formula('y~x')
