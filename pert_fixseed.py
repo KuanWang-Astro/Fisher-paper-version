@@ -95,7 +95,7 @@ cylinder_half_length = 10.0      ##half-length 10 Mpc/h
 
 cyl_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(299),args.Nbins_c-9)).astype(np.int)])[:-1]
 ann_sum_at = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(499),args.Nbins_a-9)).astype(np.int)])[:-1]
-rat_bin = args.Nbins_r
+rat_bin = np.linspace(0,1,args.Nbins_r+1)
 ##cic
 
 ptclpos = np.loadtxt(args.ptclpos)
@@ -159,9 +159,9 @@ def main(model_gen_func, fiducial, output_fname):
     dp_range = np.array((0.15,0.4,0.4,2,0.3))
 
     for i in range(5):
-        params[args.Nparam*i:args.Nparam*(i+1),i] += (2.*np.random.random(args.Nparam)-1)*min(dp_range[i],fid[i])
-    params[args.Nparam*5:args.Nparam*6,5] = 2.*np.random.random(args.Nparam)-1
-    params[args.Nparam*6:args.Nparam*7,6] = 2.*np.random.random(args.Nparam)-1
+        params[args.Nparam*i:args.Nparam*(i+1),i] += np.linspace(-1,1,args.Nparam)*min(dp_range[i],fid[i])
+    params[args.Nparam*5:args.Nparam*6,5] = np.linspace(-1,1,args.Nparam)
+    params[args.Nparam*6:args.Nparam*7,6] = np.linspace(-1,1,args.Nparam)
 
 
     
