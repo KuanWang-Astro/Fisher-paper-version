@@ -11,13 +11,30 @@ python fid_random.py --Nvpf 500 --Nds 500 --threshold -20.0 --outfile Run_102218
 python fid_random.py --Nvpf 500 --Nds 500 --threshold -20.5 --outfile Run_102218/fidrandom_20p5
 python fid_random.py --Nvpf 500 --Nds 500 --threshold -21.0 --outfile Run_102218/fidrandom_21p0
 
-
+for run in {1..10}
+do
 python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_102218/pert_19p0
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_102218/pert_19p5
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_102218/pert_20p0
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_102218/pert_20p5
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_102218/pert_21p0
+done
 
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_102218/pert_19p5
+done
+
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_102218/pert_20p0
+done
+
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_102218/pert_20p5
+done
+
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_102218/pert_21p0
+done
 
 cd Run_102218/
 echo '' > ../seedlist_102218.py

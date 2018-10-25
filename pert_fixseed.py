@@ -176,9 +176,9 @@ def main(model_gen_func, fiducial, output_fname):
                                 halo_finder = args.halofinder)
             model.populate_mock(halocat)
             for i, output_data in enumerate(pool.map(calc_all_observables, params)):
-                if i%nproc == nproc-1:
-                    print i
-                    print str(datetime.now())
+                #if i%nproc == nproc-1:
+                #    print i
+                #    print str(datetime.now())
                 for name, data in zip(output_names, output_data):
                     output_dict[name].append(data)
     
@@ -195,5 +195,6 @@ if __name__ == '__main__':
         f.write('seed:'+str(seed)+'\n')
         for arg in vars(args):
             f.write(str(arg)+':'+str(getattr(args, arg))+'\n')
+    print str(datetime.now())
 
 
