@@ -23,30 +23,7 @@ oneside_dict = {'-19.0':np.array([0.15, 0.4, 0.4,   2, 0.3, 1, 1]),
 
 Nparam = 200
 
-param_list = [r'$\alpha$', r'$\log{M_\mathrm{1}}$', r'$\sigma_{\log{M}}$', r'$\log{M_\mathrm{0}}$', r'$\log{M_{\rm{min}}}$',\
-              r'$A_{\rm{cen}}$', r'$A_{\rm{sat}}$']
-
-r_wp = np.logspace(-1,1.5,30)
-r_wp = (r_wp[1:]+r_wp[:-1])/2.
-
-r_ds = np.logspace(-1,1.5,31)
-r_ds = np.sqrt(0.5*(r_ds[1:]**2 + r_ds[:-1]**2))
-
-r_vpf = np.logspace(0,1,30)
-
-cic_bin = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(150),30-10)).astype(np.int)])
-cia_bin = np.concatenate([np.arange(10),np.around(np.logspace(1,np.log10(200),30-10)).astype(np.int)])
-
-ratio_bin = np.linspace(0,1,31)
-
-obs_list = [r'$n_{\mathrm{gal}}$',]+\
-            list([r'$w_{\mathrm{p}}(r_{\mathrm{p}}= %.2f h^{-1}\mathrm{Mpc})$'%r for r in r_wp])+\
-            list([r'$\Delta \Sigma(r_{\mathrm{p}}=%.2f h^{-1}\mathrm{Mpc})$'%r for r in r_ds])+\
-            list([r'$\mathrm{VPF}(r=%.2f h^{-1}\mathrm{Mpc})$'%r for r in r_vpf])+\
-            list([r'$P(N_{\mathrm{CIC}}=%d)$'%i for i in range(10)])+\
-            list([r'$P(%d\leq N_{\mathrm{CIC}}<%d)$'%(cic_bin[i],cic_bin[i+1]) for i in range(10,29)])+\
-            [r'$P(N_{\mathrm{CIC}} \geq %d)$'%cic_bin[-1],]+\
-            list([r'$P(N_{\mathrm{CIA}}=%d)$'%i for i in range(10)])+\
-            list([r'$P(%d\leq N_{\mathrm{CIA}}<%d)$'%(cia_bin[i],cia_bin[i+1]) for i in range(10,29)])+\
-            [r'$P(N_{\mathrm{CIA}} \geq %d)$'%cia_bin[-1],]+\
-            list([r'$P(%.2f<N_2/N_5<%.2f)$'%(ratio_bin[i],ratio_bin[i+1]) for i in range(30)])
+keylist = ['w','d','v','c','a','r','wd','wv','wc','wa','wr','dv','dc','da','dr','vc','va','vr','ca','cr','ar',\
+        'wdv','wdc','wda','wdr','wvc','wva','wvr','wca','wcr','war','dvc','dva','dvr','dca','dcr','dar',\
+         'vca','vcr','var','car','wdvc','wdva','wdvr','wdca','wdcr','wdar','wvca','wvcr','wvar','wcar',\
+        'dvca','dvcr','dvar','dcar','vcar','wdvca','wdvcr','wdvar','wdcar','wvcar','dvcar','wdvcar']
