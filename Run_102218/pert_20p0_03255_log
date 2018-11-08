@@ -1,0 +1,21 @@
+pert_fixseed.py
+seed:3255
+Nbins_a:30
+version:halotools_v0p4
+funcbool:[1, 1, 1, 1, 1, 1]
+redshift:0.0
+Nbins_v:30
+Nbins_w:30
+Lbox:250.0
+halofinder:rockstar
+Nbins_r:30
+outfile:Run_102218/pert_20p0
+seed:-1
+ptclpos:bolplanck_1of10_ptcl.txt
+nproc:55
+threshold:-20.0
+Nbins_d:30
+simname:bolplanck
+vpfcen:vpf_centers_250_1e5.txt
+Nbins_c:30
+Nparam:200
