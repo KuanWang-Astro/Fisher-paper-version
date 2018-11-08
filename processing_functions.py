@@ -2,6 +2,7 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 import collections
+from scipy import stats
 import itertools
 
 from rpy2.robjects.packages import importr
@@ -41,6 +42,36 @@ def mean_of_dict(dic,key2=None):
         else:
             ls.append(item)
     return mean_of_list(ls)
+#returns np array with same dimensions as dictionary items
+
+def trimmean_of_list(ls):
+    arr = np.array(ls)
+    return stats.trim_mean(arr,0.16,axis=0)
+#returns np array with same dimensions as list elements
+
+def trimmean_of_dict(dic,key2=None):
+    ls = []
+    for item in dic.values():
+        if type(item)==dict:
+            ls.append(item[key2])
+        else:
+            ls.append(item)
+    return trimmean_of_list(ls)
+#returns np array with same dimensions as dictionary items
+
+def median_of_list(ls):
+    arr = np.array(ls)
+    return np.median(arr,axis=0)
+#returns np array with same dimensions as list elements
+
+def median_of_dict(dic,key2=None):
+    ls = []
+    for item in dic.values():
+        if type(item)==dict:
+            ls.append(item[key2])
+        else:
+            ls.append(item)
+    return median_of_list(ls)
 #returns np array with same dimensions as dictionary items
 
 #*----------------------------------------------------------------------------------------------------------------*#
@@ -99,15 +130,16 @@ def cut_by_func_2D(mat, funcnames='wdvcar', funcidx={'w':range(30),'d':range(30,
 #returns dictionary
 
 #*----------------------------------------------------------------------------------------------------------------*#
-
+idx_0 = np.concatenate((np.arange(600),np.arange(800,1400)))
 def load_pert(threshold):
     df_dict = dict()
     dp_list = np.zeros((7,Nparam))
     for seed in seed_list[threshold]:
         data = np.load('Run_102218/pert_'+threshold[1:3]+'p'+threshold[4]+'_'+seed+'.npz')
-        df_dict[seed] = data['func_all']
+        df_dict[seed] = data['func_all'][idx_0]
     for i in range(7):
         dp_list[i] = data['param'][Nparam*i:(i+1)*Nparam,i]
+    dp_list = dp_list[[0,1,2,4,5,6]]
     return df_dict, dp_list
 #returns function dictionary of seeds, and 7*Nparam perturbed parameter np array
 
@@ -122,11 +154,11 @@ def gcv_alpha_singley(x, y):
 def gcv_alphas(func, param, apply_min=0, min_a=None):
     if apply_min:
         return np.array([np.array([max(gcv_alpha_singley(param[i],func[Nparam*i:(i+1)*Nparam,j]),min_a)\
-                      for j in range(func.shape[1])]) for i in range(7)])
+                      for j in range(func.shape[1])]) for i in range(6)])
 
     else:
         return np.array([np.array([gcv_alpha_singley(param[i],func[Nparam*i:(i+1)*Nparam,j])\
-                      for j in range(func.shape[1])]) for i in range(7)])
+                      for j in range(func.shape[1])]) for i in range(6)])
 #returns 7*len(func) 2D np array
 
 #*----------------------------------------------------------------------------------------------------------------*#
@@ -147,7 +179,7 @@ def locfit_deriv_singley(y, alpha, x, x0): #x is perturbed values of one paramet
 #returns single value
 
 def locfit_comb(ys, alphas, xs, x0s):
-    return np.array([np.array([locfit_deriv_singley(ys[Nparam*i:(i+1)*Nparam,j],alphas[i,j],xs[i],x0s[i]) for j in range(ys.shape[1])]) for i in range(7)])
+    return np.array([np.array([locfit_deriv_singley(ys[Nparam*i:(i+1)*Nparam,j],alphas[i,j],xs[i],x0s[i]) for j in range(ys.shape[1])]) for i in range(6)])
 #returns 7*len(func) 2D np array 
 
 #*----------------------------------------------------------------------------------------------------------------*#
