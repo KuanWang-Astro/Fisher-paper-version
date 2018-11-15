@@ -490,7 +490,7 @@ def calc_jk_real(points, box_size, wbool=1, dbool=1, vbool=1, cbool=1, abool=1, 
     ann_bin: array_like
         Must be a 1-D array, the bins at which to sum counts-in-annuli histogram.
     rat_bin: int
-        Number of bins for counts-in-cylinders ratio histogram.
+        Must be a 1-D array, the bin edges for which to compute ratio histogram.
 
     Returns
     -------
@@ -526,8 +526,8 @@ def calc_jk_real(points, box_size, wbool=1, dbool=1, vbool=1, cbool=1, abool=1, 
         if rbool:
             ratio_h = ((cic1_h-1)/(cic2_h-1)).astype('float')
             ratio_h[~np.isfinite(ratio_h)] = 0.
-            Qratio_h = np.array([np.percentile(ratio_h,q) for q in np.linspace(0,100,rat_bin+2)[1:-1]])
-            func_full.append(Qratio_h)
+            Pratio_h = np.histogram(ratio_h,bins=rat_bin)[0]/float(N)
+            func_full.append(Pratio_h)
     
         func_full = np.array([item for sublist in func_full for item in sublist])
         return func_full
@@ -604,11 +604,11 @@ def calc_jk_real(points, box_size, wbool=1, dbool=1, vbool=1, cbool=1, abool=1, 
         if rbool:
             ratio = (cic1/cic2).astype('float')
             ratio[~np.isfinite(ratio)] = 0.
-            Qratio_jack = np.zeros((n_jack,rat_bin))
+            Pratio_jack = np.zeros((n_jack,len(rat_bin)-1))
             for i in range(n_jack):
                 mask = jack_ids!=i
-                Qratio_jack[i] = np.array([np.percentile(ratio[mask],q) for q in np.linspace(0,100,rat_bin+2)[1:-1]])
-            func_jk.append(Qratio_jack.T)
+                Pratio_jack[i] = np.histogram(ratio[mask],bins=rat_bin)[0]/float(len(points[mask]))
+            func_jk.append(Pratio_jack.T)
         func_cov = np.cov(np.vstack(func_jk), bias=1)*(n_jack-1)
 
         return func_cov, np.vstack(func_jk)

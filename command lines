@@ -1,34 +1,43 @@
-python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_30_bins_for_all/jk_19p0
-python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_30_bins_for_all/jk_19p5
-python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_20p0
-python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/jk_20p5
-python fid_jk.py --Nsidejk 10 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_21p0
-
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -21.0 --outfile Run_30_bins_for_all/fidreal_21p0
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.5 --outfile Run_30_bins_for_all/fidreal_20p5
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.0 --outfile Run_30_bins_for_all/fidreal_20p0
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.5 --outfile Run_30_bins_for_all/fidreal_19p5
-python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.0 --outfile Run_30_bins_for_all/fidreal_19p0
-
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_30_bins_for_all/pert_19p0
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_30_bins_for_all/pert_19p5
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/pert_20p0
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/pert_20p5
-python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_30_bins_for_all/pert_21p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -21.0 --outfile Run_102218/fidreal_21p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.5 --outfile Run_102218/fidreal_20p5
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -20.0 --outfile Run_102218/fidreal_20p0
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.5 --outfile Run_102218/fidreal_19p5
+python fid_real.py --funcbool 1 1 1 1 1 1 --Nparam 500 --threshold -19.0 --outfile Run_102218/fidreal_19p0
 
 
-python fid_random.py --Nvpf 500 --Nds 500 --threshold -19.0 --outfile Run_30_bins_for_all/fidrandom_19p0
-python fid_random.py --Nvpf 500 --Nds 500 --threshold -19.5 --outfile Run_30_bins_for_all/fidrandom_19p5
-python fid_random.py --Nvpf 500 --Nds 500 --threshold -20.0 --outfile Run_30_bins_for_all/fidrandom_20p0
-python fid_random.py --Nvpf 500 --Nds 500 --threshold -20.5 --outfile Run_30_bins_for_all/fidrandom_20p5
-python fid_random.py --Nvpf 500 --Nds 500 --threshold -21.0 --outfile Run_30_bins_for_all/fidrandom_21p0
+python fid_random.py --Nvpf 500 --Nds 500 --threshold -19.0 --outfile Run_102218/fidrandom_19p0
+python fid_random.py --Nvpf 500 --Nds 500 --threshold -19.5 --outfile Run_102218/fidrandom_19p5
+python fid_random.py --Nvpf 500 --Nds 500 --threshold -20.0 --outfile Run_102218/fidrandom_20p0
+python fid_random.py --Nvpf 500 --Nds 500 --threshold -20.5 --outfile Run_102218/fidrandom_20p5
+python fid_random.py --Nvpf 500 --Nds 500 --threshold -21.0 --outfile Run_102218/fidrandom_21p0
 
-cd Run_30_bins_for_all/
-for f in pert_19p0_*.npz; do tmp=${f#*19p0_}; num=${tmp%.*}; echo -n "'$num',"; done
-for f in pert_19p5_*.npz; do tmp=${f#*19p5_}; num=${tmp%.*}; echo -n "'$num',"; done
-for f in pert_20p0_*.npz; do tmp=${f#*20p0_}; num=${tmp%.*}; echo -n "'$num',"; done
-for f in pert_20p5_*.npz; do tmp=${f#*20p5_}; num=${tmp%.*}; echo -n "'$num',"; done
-for f in pert_21p0_*.npz; do tmp=${f#*21p0_}; num=${tmp%.*}; echo -n "'$num',"; done
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_102218/pert_19p0
+done
+
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_102218/pert_19p5
+done
+
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_102218/pert_20p0
+done
+
+for run in {1..10}
+do
+python pert_fixseed.py --Nparam 200 --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_102218/pert_20p5
+done
 
 
-python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_30_bins_for_all/jk_21p0_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_30_bins_for_all/jk_21p0_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_30_bins_for_all/jk_21p0_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/jk_20p5_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/jk_20p5_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_30_bins_for_all/jk_20p5_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_20p0_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_20p0_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_30_bins_for_all/jk_20p0_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_30_bins_for_all/jk_19p5_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_30_bins_for_all/jk_19p5_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_30_bins_for_all/jk_19p5_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_30_bins_for_all/jk_19p0_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_30_bins_for_all/jk_19p0_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_30_bins_for_all/jk_19p0_z
+cd Run_102218/
+echo '' > ../seedlist_102218.py
+echo -n 'seed_19p0 = [' >> ../seedlist_102218.py; for f in pert_19p0_*.npz; do tmp=${f#*19p0_}; num=${tmp%.*}; echo -n "'$num',">> ../seedlist_102218.py; done; echo ']' >> ../seedlist_102218.py
+echo -n 'seed_19p5 = [' >> ../seedlist_102218.py; for f in pert_19p5_*.npz; do tmp=${f#*19p5_}; num=${tmp%.*}; echo -n "'$num',">> ../seedlist_102218.py; done; echo ']' >> ../seedlist_102218.py
+echo -n 'seed_20p0 = [' >> ../seedlist_102218.py; for f in pert_20p0_*.npz; do tmp=${f#*20p0_}; num=${tmp%.*}; echo -n "'$num',">> ../seedlist_102218.py; done; echo ']' >> ../seedlist_102218.py
+echo -n 'seed_20p5 = [' >> ../seedlist_102218.py; for f in pert_20p5_*.npz; do tmp=${f#*20p5_}; num=${tmp%.*}; echo -n "'$num',">> ../seedlist_102218.py; done; echo ']' >> ../seedlist_102218.py
+
+
+python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_102218/jk_21p0_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_102218/jk_21p0_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -21.0 --outfile Run_102218/jk_21p0_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_102218/jk_20p5_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_102218/jk_20p5_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -20.5 --outfile Run_102218/jk_20p5_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_102218/jk_20p0_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_102218/jk_20p0_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -20.0 --outfile Run_102218/jk_20p0_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_102218/jk_19p5_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_102218/jk_19p5_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -19.5 --outfile Run_102218/jk_19p5_z & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir x --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_102218/jk_19p0_x & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir y --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_102218/jk_19p0_y & python fid_jk_abundance_matching.py --Nsidejk 10 --losdir z --funcbool 1 1 1 1 1 1 --threshold -19.0 --outfile Run_102218/jk_19p0_z
