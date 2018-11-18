@@ -1,0 +1,13 @@
+fid_random.py
+redshift:0.0
+Nbins_v:30
+Lbox:250.0
+halofinder:rockstar
+Nvpf:500
+outfile:Run_negative_Asat/fidrandom_19p0
+version:halotools_v0p4
+nproc:55
+threshold:-19.0
+Nds:500
+simname:bolplanck
+Nbins_d:30

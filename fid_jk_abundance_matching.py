@@ -48,15 +48,13 @@ output_names = ('jkcov','jkfunc')
 ##########################################################
 
 if args.threshold==-19.0:
-    Ng = int(0.017004429312*args.Lbox**3)
+    Ng = int(0.017002926976*args.Lbox**3)  #with Asat=-0.6
 elif args.threshold==-19.5:
-    Ng = int(0.011267999744*args.Lbox**3)
+    Ng = int(0.011266550400*args.Lbox**3)
 elif args.threshold==-20.0:
-    Ng = int(0.006515886336*args.Lbox**3)
+    Ng = int(0.006517256832*args.Lbox**3)
 elif args.threshold==-20.5:
-    Ng = int(0.003186637824*args.Lbox**3)
-elif args.threshold==-21.0:
-    Ng = int(0.001170136576*args.Lbox**3)
+    Ng = int(0.003187406080*args.Lbox**3)
     
 #########################################################
 
