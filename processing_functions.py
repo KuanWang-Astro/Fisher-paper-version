@@ -135,7 +135,7 @@ def load_pert(threshold):
     df_dict = dict()
     dp_list = np.zeros((7,Nparam))
     for seed in seed_list[threshold]:
-        data = np.load('Run_102218/pert_'+threshold[1:3]+'p'+threshold[4]+'_'+seed+'.npz')
+        data = np.load('Run_negative_Asat/pert_'+threshold[1:3]+'p'+threshold[4]+'_'+seed+'.npz')
         df_dict[seed] = data['func_all'][idx_0]
     for i in range(7):
         dp_list[i] = data['param'][Nparam*i:(i+1)*Nparam,i]
