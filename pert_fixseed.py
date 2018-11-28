@@ -54,11 +54,11 @@ output_names = ('func_all','param')
 
 ##########################################################
 
-p19p0 = np.array((1.04029, 12.80315, 0.51193, 10.25010, 11.64354, 0., 0.))
-p19p5 = np.array((1.11553, 13.06008, 0.44578, 11.29134, 11.75068, 0., 0.))
-p20p0 = np.array((1.14385, 13.28584, 0.34846, 11.30750, 11.97186, 0., 0.))
-p20p5 = np.array((1.19652, 13.59169, 0.18536, 11.20134, 12.25470, 0., 0.))
-p21p0 = np.array((1.33738, 13.98811, 0.55950, 11.95797, 12.82356, 0., 0.))
+p19p0 = np.array((1.04029, 12.80315, 0.51193, 10.25010, 11.64354, 0.5, 0.))
+p19p5 = np.array((1.11553, 13.06008, 0.44578, 11.29134, 11.75068, 0.5, 0.))
+p20p0 = np.array((1.14385, 13.28584, 0.34846, 11.30750, 11.97186, 0.5, 0.))
+p20p5 = np.array((1.19652, 13.59169, 0.18536, 11.20134, 12.25470, 0.5, 0.))
+p21p0 = np.array((1.33738, 13.98811, 0.55950, 11.95797, 12.82356, 0.5, 0.))
 
 if args.threshold==-19.0:
     fiducial_p = p19p0
@@ -160,8 +160,8 @@ def main(model_gen_func, fiducial, output_fname):
 
     for i in range(5):
         params[args.Nparam*i:args.Nparam*(i+1),i] += np.linspace(-1,1,args.Nparam)*min(dp_range[i],fid[i])
-    params[args.Nparam*5:args.Nparam*6,5] = np.linspace(-1,1,args.Nparam)
-    params[args.Nparam*6:args.Nparam*7,6] = np.linspace(-1,1,args.Nparam)
+    params[args.Nparam*5:args.Nparam*6,5] = np.linspace(0.,1,args.Nparam)
+    params[args.Nparam*6:args.Nparam*7,6] = np.linspace(-1,1.,args.Nparam)
 
 
     
