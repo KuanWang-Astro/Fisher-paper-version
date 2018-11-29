@@ -10,7 +10,7 @@ done
 
 
 
-cd Run_negative_Asat/
+cd Run_positive_Acen/
 echo '' > ../seedlist_posAcen.py
 echo -n 'seed_20p0 = [' >> ../seedlist_posAcen.py; for f in pert_20p0_*.npz; do tmp=${f#*20p0_}; num=${tmp%.*}; echo -n "'$num',">> ../seedlist_posAcen.py; done; echo ']' >> ../seedlist_posAcen.py
 
