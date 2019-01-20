@@ -74,6 +74,21 @@ def median_of_dict(dic,key2=None):
     return median_of_list(ls)
 #returns np array with same dimensions as dictionary items
 
+def std_of_list(ls):
+    arr = np.array(ls)
+    return np.std(arr,axis=0)
+#returns np array with same dimensions as list elements
+
+def std_of_dict(dic,key2=None):
+    ls = []
+    for item in dic.values():
+        if type(item)==dict:
+            ls.append(item[key2])
+        else:
+            ls.append(item)
+    return std_of_list(ls)
+#returns np array with same dimensions as dictionary items
+
 #*----------------------------------------------------------------------------------------------------------------*#
 
 def calc_covariance(jkcov, fidreal, fidvd=None, funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
@@ -107,25 +122,26 @@ def inv_cov(cov,rcond=0):
 
 #*----------------------------------------------------------------------------------------------------------------*#
 
-def cut_by_func_1D(vec, axis=0, funcnames='wdvcar', funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
+def cut_by_func_1D(vec, axis=0, funcnames='wdvcar', funcidx={'w':range(1,30),'d':range(30,60),'v':range(60,90),\
                                            'c':range(90,120),'a':range(120,150),'r':range(150,180)}):
     vecs = dict()
     for key in funcnames:
-        vecs[key] = vec.take(funcidx[key],axis=axis)
+        vecs[key] = vec.take(np.concatenate((np.zeros(1).astype(int),funcidx[key])),axis=axis)
     for l in range(2,len(funcnames)+1):
         for key in [''.join(comb) for comb in itertools.combinations(funcnames,l)]:
-            vecs[key] = np.concatenate(list(vec.take(funcidx[k],axis=axis) for k in key),axis=axis)
+            vecs[key] = np.concatenate((vec.take([0,],axis=axis),np.concatenate(list(vec.take(funcidx[k],axis=axis) for k in key),axis=axis)),axis=axis)
     return vecs
 #returns dictionary
 
-def cut_by_func_2D(mat, funcnames='wdvcar', funcidx={'w':range(30),'d':range(30,60),'v':range(60,90),\
+def cut_by_func_2D(mat, funcnames='wdvcar', funcidx={'w':range(1,30),'d':range(30,60),'v':range(60,90),\
                                            'c':range(90,120),'a':range(120,150),'r':range(150,180)}):
     mats = dict()
+    funcidx['n'] = [0,]
     for key in funcnames:
-        mats[key] = mat[funcidx[key]][:,funcidx[key]]
+        mats[key] = mat[np.concatenate((np.zeros(1).astype(int),funcidx[key]))][:,np.concatenate((np.zeros(1).astype(int),funcidx[key]))]
     for l in range(2,len(funcnames)+1):
         for key in [''.join(comb) for comb in itertools.combinations(funcnames,l)]:
-            mats[key] = np.block([[mat[funcidx[k1]][:,funcidx[k2]] for k2 in key] for k1 in key])
+            mats[key] = np.block([[mat[funcidx[k1]][:,funcidx[k2]] for k2 in 'n'+key] for k1 in 'n'+key])
     return mats
 #returns dictionary
 
