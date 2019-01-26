@@ -93,7 +93,7 @@ def calc_all_observables(los_direction):
     elif los_direction=='z':
         xyz = 'xyz'
     
-    table = halocat.halo_table[np.argsort(-halocat.halo_table['halo_vmax'])[:Ng]]
+    table = halocat.halo_table[np.argsort(-halocat.halo_table['halo_vpeak'])[:Ng]]
     
     pos_gals_d = return_xyz_formatted_array(*(table['halo_'+ax] for ax in xyz), \
             velocity=table['halo_v'+los_direction], velocity_distortion_dimension='z', period=Lbox) ##redshift space distorted
